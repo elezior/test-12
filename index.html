@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mecha Survivor - Enhanced Edition</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="gameContainer">
+        <canvas id="gameCanvas"></canvas>
+        <canvas id="backgroundCanvas"></canvas>
+        
+        <!-- UI Overlay -->
+        <div id="uiOverlay">
+            <div id="topBar">
+                <div id="healthBar" class="bar-container">
+                    <div class="bar-label">HULL INTEGRITY</div>
+                    <div class="bar-background">
+                        <div id="healthBarFill" class="bar-fill health-fill"></div>
+                        <div class="bar-text"><span id="healthText">100/100</span></div>
+                    </div>
+                </div>
+                
+                <div id="expBar" class="bar-container">
+                    <div class="bar-label">COMBAT EXPERIENCE</div>
+                    <div class="bar-background">
+                        <div id="expBarFill" class="bar-fill exp-fill"></div>
+                        <div class="bar-text">LEVEL <span id="levelText">1</span></div>
+                    </div>
+                </div>
+                
+                <div id="energyBar" class="bar-container">
+                    <div class="bar-label">ENERGY CORE</div>
+                    <div class="bar-background">
+                        <div id="energyBarFill" class="bar-fill energy-fill"></div>
+                        <div class="bar-text"><span id="energyText">100/100</span></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="stats">
+                <div class="stat-item">
+                    <span class="stat-label">TIME:</span>
+                    <span id="timeText" class="stat-value">0:00</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">KILLS:</span>
+                    <span id="killsText" class="stat-value">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">WAVE:</span>
+                    <span id="waveText" class="stat-value">1</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">SCORE:</span>
+                    <span id="scoreText" class="stat-value">0</span>
+                </div>
+            </div>
+            
+            <div id="weaponStatus">
+                <div class="weapon-indicator" id="mainGunIndicator">
+                    <div class="weapon-icon">●</div>
+                    <div class="weapon-name">PLASMA CANNON</div>
+                </div>
+                <div class="weapon-indicator inactive" id="missileIndicator">
+                    <div class="weapon-icon">◆</div>
+                    <div class="weapon-name">MISSILES</div>
+                </div>
+                <div class="weapon-indicator inactive" id="laserIndicator">
+                    <div class="weapon-icon">═</div>
+                    <div class="weapon-name">LASER</div>
+                </div>
+                <div class="weapon-indicator inactive" id="shieldIndicator">
+                    <div class="weapon-icon">○</div>
+                    <div class="weapon-name">SHIELD</div>
+                </div>
+                <div class="weapon-indicator inactive" id="droneIndicator">
+                    <div class="weapon-icon">◊</div>
+                    <div class="weapon-name">DRONES</div>
+                </div>
+            </div>
+            
+            <div id="comboCounter" class="hidden">
+                <div class="combo-text">COMBO</div>
+                <div id="comboNumber" class="combo-number">x1</div>
+            </div>
+        </div>
+        
+        <!-- Start Screen -->
+        <div id="startScreen" class="menu-screen">
+            <div class="menu-content">
+                <h1 class="game-title">MECHA SURVIVOR</h1>
+                <div class="subtitle">ENHANCED EDITION</div>
+                
+                <div class="menu-buttons">
+                    <button id="startBtn" class="menu-button primary">START MISSION</button>
+                    <button id="controlsBtn" class="menu-button">CONTROLS</button>
+                    <button id="upgradesBtn" class="menu-button">MECHA SPECS</button>
+                </div>
+                
+                <div id="controlsInfo" class="info-panel hidden">
+                    <h3>CONTROLS</h3>
+                    <div class="control-item">
+                        <span class="control-key">WASD / ↑↓←→</span>
+                        <span class="control-desc">Move Mecha</span>
+                    </div>
+                    <div class="control-item">
+                        <span class="control-key">MOUSE</span>
+                        <span class="control-desc">Aim Weapons</span>
+                    </div>
+                    <div class="control-item">
+                        <span class="control-key">SHIFT</span>
+                        <span class="control-desc">Boost (When Unlocked)</span>
+                    </div>
+                    <div class="control-item">
+                        <span class="control-key">SPACE</span>
+                        <span class="control-desc">Special Ability</span>
+                    </div>
+                </div>
+                
+                <div id="upgradesInfo" class="info-panel hidden">
+                    <h3>AVAILABLE UPGRADES</h3>
+                    <p>Defeat enemies to gain experience and unlock:</p>
+                    <ul>
+                        <li>Weapon Systems: Missiles, Laser, Plasma Burst</li>
+                        <li>Defense: Energy Shield, Armor Plating</li>
+                        <li>Support: Repair Drones, Combat Drones</li>
+                        <li>Movement: Boost Jets, Phase Shift</li>
+                        <li>And many more...</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Upgrade Menu -->
+        <div id="upgradeMenu" class="menu-screen hidden">
+            <div class="menu-content">
+                <h2 class="upgrade-title">SYSTEM UPGRADE AVAILABLE</h2>
+                <div class="upgrade-subtitle">Choose your enhancement:</div>
+                <div id="upgradeOptions" class="upgrade-options"></div>
+            </div>
+        </div>
+        
+        <!-- Game Over Screen -->
+        <div id="gameOverScreen" class="menu-screen hidden">
+            <div class="menu-content">
+                <h2 class="game-over-title">MISSION FAILED</h2>
+                <div class="game-over-stats">
+                    <div class="stat-row">
+                        <span class="stat-label">Time Survived:</span>
+                        <span id="finalTime" class="stat-value">0:00</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Enemies Destroyed:</span>
+                        <span id="finalKills" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Final Level:</span>
+                        <span id="finalLevel" class="stat-value">1</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Final Score:</span>
+                        <span id="finalScore" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Best Combo:</span>
+                        <span id="finalCombo" class="stat-value">x1</span>
+                    </div>
+                </div>
+                <div class="menu-buttons">
+                    <button id="restartBtn" class="menu-button primary">RETRY MISSION</button>
+                    <button id="mainMenuBtn" class="menu-button">MAIN MENU</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Wave Announcement -->
+        <div id="waveAnnouncement" class="hidden">
+            <div class="wave-text">WAVE <span id="waveNumber">1</span></div>
+            <div class="wave-subtitle" id="waveSubtitle">Enemies Incoming!</div>
+        </div>
+        
+        <!-- Damage Numbers Container -->
+        <div id="damageNumbers"></div>
+    </div>
+    
+    <script src="game.js"></script>
+</body>
+</html>
