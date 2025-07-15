@@ -1,0 +1,535 @@
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #000;
+    color: #fff;
+    font-family: 'Orbitron', 'Arial Black', monospace;
+    overflow: hidden;
+    user-select: none;
+}
+
+#gameContainer {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+}
+
+#backgroundCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.3;
+}
+
+#gameCanvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid #0ff;
+    box-shadow: 
+        0 0 30px #0ff,
+        inset 0 0 30px rgba(0, 255, 255, 0.1);
+    cursor: crosshair;
+}
+
+/* UI Overlay */
+#uiOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+/* Top Bar */
+#topBar {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 30px;
+}
+
+.bar-container {
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid #0ff;
+    padding: 10px;
+    min-width: 250px;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.bar-label {
+    font-size: 12px;
+    color: #0ff;
+    margin-bottom: 5px;
+    letter-spacing: 2px;
+}
+
+.bar-background {
+    position: relative;
+    width: 100%;
+    height: 20px;
+    background: #111;
+    border: 1px solid #333;
+    overflow: hidden;
+}
+
+.bar-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+.health-fill {
+    background: linear-gradient(90deg, #f00, #ff0);
+    box-shadow: 0 0 10px #f00;
+}
+
+.exp-fill {
+    background: linear-gradient(90deg, #0f0, #0ff);
+    box-shadow: 0 0 10px #0f0;
+}
+
+.energy-fill {
+    background: linear-gradient(90deg, #00f, #f0f);
+    box-shadow: 0 0 10px #00f;
+}
+
+.bar-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 14px;
+    font-weight: bold;
+    text-shadow: 0 0 5px #000;
+    z-index: 1;
+}
+
+/* Stats */
+#stats {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid #0ff;
+    padding: 15px;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.stat-item {
+    margin: 5px 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.stat-label {
+    color: #0ff;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.stat-value {
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Weapon Status */
+#weaponStatus {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid #0ff;
+    padding: 15px;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.weapon-indicator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 8px 0;
+    opacity: 1;
+    transition: all 0.3s;
+}
+
+.weapon-indicator.inactive {
+    opacity: 0.3;
+}
+
+.weapon-icon {
+    font-size: 20px;
+    color: #0ff;
+    text-shadow: 0 0 5px #0ff;
+}
+
+.weapon-name {
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.weapon-indicator.active .weapon-icon {
+    animation: pulse 1s infinite;
+}
+
+/* Combo Counter */
+#comboCounter {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid #ff0;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s;
+    box-shadow: 0 0 20px rgba(255, 255, 0, 0.5);
+}
+
+#comboCounter.hidden {
+    opacity: 0;
+    transform: scale(0.5);
+}
+
+.combo-text {
+    font-size: 14px;
+    color: #ff0;
+    letter-spacing: 2px;
+}
+
+.combo-number {
+    font-size: 36px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 0 10px #ff0;
+}
+
+/* Menu Screens */
+.menu-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    pointer-events: all;
+}
+
+.menu-screen.hidden {
+    display: none;
+}
+
+.menu-content {
+    text-align: center;
+    max-width: 800px;
+    padding: 40px;
+}
+
+/* Start Screen */
+.game-title {
+    font-size: 72px;
+    color: #0ff;
+    text-shadow: 
+        0 0 20px #0ff,
+        0 0 40px #0ff,
+        0 0 60px #0ff;
+    margin-bottom: 10px;
+    animation: titleGlow 2s ease-in-out infinite;
+}
+
+@keyframes titleGlow {
+    0%, 100% { text-shadow: 0 0 20px #0ff, 0 0 40px #0ff, 0 0 60px #0ff; }
+    50% { text-shadow: 0 0 30px #0ff, 0 0 60px #0ff, 0 0 90px #0ff; }
+}
+
+.subtitle {
+    font-size: 24px;
+    color: #fff;
+    margin-bottom: 40px;
+    letter-spacing: 4px;
+}
+
+.menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    margin: 30px 0;
+}
+
+.menu-button {
+    background: rgba(0, 255, 255, 0.1);
+    border: 2px solid #0ff;
+    color: #fff;
+    padding: 15px 40px;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s;
+    min-width: 300px;
+    position: relative;
+    overflow: hidden;
+}
+
+.menu-button:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.4), transparent);
+    transition: left 0.5s;
+}
+
+.menu-button:hover {
+    background: rgba(0, 255, 255, 0.2);
+    transform: scale(1.05);
+    box-shadow: 0 0 20px #0ff;
+}
+
+.menu-button:hover:before {
+    left: 100%;
+}
+
+.menu-button.primary {
+    background: rgba(0, 255, 255, 0.3);
+    border-color: #fff;
+    box-shadow: 0 0 20px #0ff;
+}
+
+/* Info Panels */
+.info-panel {
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid #0ff;
+    padding: 20px;
+    margin-top: 20px;
+    text-align: left;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.info-panel h3 {
+    color: #0ff;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.control-item {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+    padding: 5px 0;
+    border-bottom: 1px solid #333;
+}
+
+.control-key {
+    color: #ff0;
+    font-weight: bold;
+}
+
+.control-desc {
+    color: #fff;
+}
+
+/* Upgrade Menu */
+.upgrade-title {
+    font-size: 36px;
+    color: #0ff;
+    margin-bottom: 10px;
+    text-shadow: 0 0 20px #0ff;
+    animation: pulse 1s infinite;
+}
+
+.upgrade-subtitle {
+    font-size: 18px;
+    color: #fff;
+    margin-bottom: 30px;
+}
+
+.upgrade-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.upgrade-option {
+    background: rgba(0, 255, 255, 0.1);
+    border: 2px solid #0ff;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.upgrade-option:hover {
+    background: rgba(0, 255, 255, 0.3);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 255, 255, 0.5);
+}
+
+.upgrade-option h3 {
+    color: #0ff;
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+.upgrade-option p {
+    color: #fff;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.upgrade-rarity {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 3px;
+}
+
+.rarity-common { background: #666; }
+.rarity-rare { background: #00f; }
+.rarity-epic { background: #f0f; }
+.rarity-legendary { 
+    background: linear-gradient(45deg, #ff0, #f00, #f0f, #00f);
+    animation: legendaryShine 2s linear infinite;
+}
+
+@keyframes legendaryShine {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+
+/* Game Over Screen */
+.game-over-title {
+    font-size: 48px;
+    color: #f00;
+    text-shadow: 0 0 20px #f00;
+    margin-bottom: 30px;
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+.game-over-stats {
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid #f00;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+    font-size: 18px;
+}
+
+/* Wave Announcement */
+#waveAnnouncement {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    pointer-events: none;
+    z-index: 999;
+}
+
+.wave-text {
+    font-size: 72px;
+    color: #ff0;
+    text-shadow: 0 0 30px #ff0;
+    animation: waveZoom 2s ease-out;
+}
+
+.wave-subtitle {
+    font-size: 24px;
+    color: #fff;
+    margin-top: 10px;
+    animation: waveZoom 2s ease-out 0.2s both;
+}
+
+@keyframes waveZoom {
+    0% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); opacity: 0; }
+}
+
+/* Damage Numbers */
+#damageNumbers {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 500;
+}
+
+.damage-number {
+    position: absolute;
+    font-size: 20px;
+    font-weight: bold;
+    animation: damageFloat 1s ease-out forwards;
+}
+
+@keyframes damageFloat {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-50px); opacity: 0; }
+}
+
+.damage-normal { color: #ff0; text-shadow: 0 0 5px #ff0; }
+.damage-crit { 
+    color: #f00; 
+    text-shadow: 0 0 10px #f00;
+    font-size: 28px;
+}
+.damage-heal { color: #0f0; text-shadow: 0 0 5px #0f0; }
+
+/* Animations */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+@keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .game-title { font-size: 48px; }
+    .menu-button { min-width: 200px; padding: 12px 30px; }
+    #topBar { flex-direction: column; gap: 10px; }
+    .bar-container { min-width: 200px; }
+}
