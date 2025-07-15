@@ -1,3 +1,5 @@
+npm i @vercel/analytics
+import { Analytics } from "@vercel/analytics/next"
 // Canvas setup
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
