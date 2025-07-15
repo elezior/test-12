@@ -51,8 +51,8 @@ const player = {
     boostCooldown: 0,
     phaseShift: false,
     phaseShiftCooldown: 0
+    <Analytics />
 };
-<Analytics />
 
 // Weapons
 const weapons = {
